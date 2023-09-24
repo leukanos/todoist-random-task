@@ -1,0 +1,22 @@
+service: todoist-random-task
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    TODOIST_SECRET_TOKEN: ${self:custom.todoistSecretToken.token}
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+custom:
+  todoistSecretToken: ${ssm:/aws/reference/secretsmanager/todoistSecretToken}
+
+plugins:
+  - serverless-plugin-typescript
